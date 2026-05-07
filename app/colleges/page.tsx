@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { CollegeCard, type College } from "@/components/colleges/CollegeCard";
@@ -10,7 +10,7 @@ import { CollegeSkeleton } from "@/components/colleges/CollegeSkeleton";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { useDebounce } from "@/hooks/use-debounce";
 
-export default function CollegesPage() {
+function CollegesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -136,5 +136,21 @@ export default function CollegesPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CollegesPage() {
+  return (
+    <Suspense fallback={
+      <div className="container py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <CollegeSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    }>
+      <CollegesContent />
+    </Suspense>
   );
 }
