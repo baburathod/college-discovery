@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
+export const dynamic = "force-dynamic";
+
 const querySchema = z.object({
   search: z.string().optional(),
   location: z.string().optional(),
